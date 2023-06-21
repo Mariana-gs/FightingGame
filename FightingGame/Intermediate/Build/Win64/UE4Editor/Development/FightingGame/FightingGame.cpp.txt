@@ -1,0 +1,2 @@
+C:\Users\mariana.soares\Documents\GitHub\FightingGame\FightingGame\Intermediate\Build\Win64\UE4Editor\Development\FightingGame\Definitions.FightingGame.h
+C:\Users\mariana.soares\Documents\GitHub\FightingGame\FightingGame\Source\FightingGame\FightingGame.h
