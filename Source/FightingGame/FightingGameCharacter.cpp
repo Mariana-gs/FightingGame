@@ -7,8 +7,10 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-AFightingGameCharacter::AFightingGameCharacter()
-{
+
+
+AFightingGameCharacter::AFightingGameCharacter(){
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -41,6 +43,8 @@ AFightingGameCharacter::AFightingGameCharacter()
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 	GetCharacterMovement()->MaxFlySpeed = 600.f;
 
+	playerHealth = 1.00f; //percent
+
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -48,31 +52,73 @@ AFightingGameCharacter::AFightingGameCharacter()
 //////////////////////////////////////////////////////////////////////////
 // Input
 
-void AFightingGameCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
-{
+void AFightingGameCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent){
 	// set up gameplay key bindings
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AFightingGameCharacter::MoveRight);
 
+	PlayerInputComponent->BindAction("Attack1", IE_Pressed, this, &AFightingGameCharacter::StartAttack1);
+	PlayerInputComponent->BindAction("Attack2", IE_Pressed, this, &AFightingGameCharacter::StartAttack2);
+	PlayerInputComponent->BindAction("Attack3", IE_Pressed, this, &AFightingGameCharacter::StartAttack3);
+	PlayerInputComponent->BindAction("Attack4", IE_Pressed, this, &AFightingGameCharacter::StartAttack4);
+
+
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &AFightingGameCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &AFightingGameCharacter::TouchStopped);
 }
 
-void AFightingGameCharacter::MoveRight(float Value)
-{
+void AFightingGameCharacter::MoveRight(float Value){
+
 	// add movement in that direction
 	AddMovementInput(FVector(0.f,-1.f,0.f), Value);
 }
 
-void AFightingGameCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
+void AFightingGameCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location){
+
 	// jump on any touch
 	Jump();
 }
 
-void AFightingGameCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
+void AFightingGameCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location){
+
 	StopJumping();
 }
+
+
+//Attack Functions
+void AFightingGameCharacter::StartAttack1(){
+
+	UE_LOG(LogTemp, Warning, TEXT("First Attack"));
+	TakeDamage(0.05f);
+}
+
+void AFightingGameCharacter::StartAttack2(){
+
+	UE_LOG(LogTemp, Warning, TEXT("Second Attack"));
+
+}
+
+void AFightingGameCharacter::StartAttack3(){
+
+	UE_LOG(LogTemp, Warning, TEXT("Third Attack"));
+
+}
+
+void AFightingGameCharacter::StartAttack4(){
+	
+	UE_LOG(LogTemp, Warning, TEXT("Fourth Attack"));
+
+}
+
+void AFightingGameCharacter::TakeDamage(float damageAmount){
+
+	UE_LOG(LogTemp, Warning, TEXT("We are taking damage for %f points."), damageAmount);
+	playerHealth -= damageAmount;
+
+	if (playerHealth < 0.00f) {
+		playerHealth = 0.00f;
+	}
+}
+
 
